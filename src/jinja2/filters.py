@@ -851,17 +851,24 @@ def do_indent(
 
     if blank:
         rv = (newline + indention).join(s.splitlines())
+
+        if first:
+            rv = indention + rv
     else:
         lines = s.splitlines()
-        rv = lines.pop(0)
+        first_line = lines.pop(0)
+
+        if first and first_line:
+            first_line = indention + first_line
 
         if lines:
-            rv += newline + newline.join(
-                indention + line if line else line for line in lines
+            rv = (
+                first_line
+                + newline
+                + newline.join(indention + line if line else line for line in lines)
             )
-
-    if first:
-        rv = indention + rv
+        else:
+            rv = first_line
 
     return rv
 
